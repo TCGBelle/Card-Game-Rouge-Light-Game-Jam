@@ -4,21 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private int _health;
+    private int _health = 20;
     public int Helath { get { return _health; } set { _health = value; } }
-    private Deck _playerDeck;
-    public Deck PlayerDeck { get { return _playerDeck; } set { _playerDeck = value;  } }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnCollisionEnter(Collider2D other)
     {

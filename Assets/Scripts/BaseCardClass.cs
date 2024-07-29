@@ -31,10 +31,11 @@ public class BaseCardClass : MonoBehaviour
     [SerializeField] private Sprite sprite;
     private Collider2D _boxcol;
     private Collider2D _overlap;
-    private List<Collider2D> previousOverlappingColliders = new List<Collider2D>();
     private int _layer;
     private LayerMask _layerMask;
     private bool _overplayer;
+
+    private GameManager _gameManager;
 
     public BaseCardClass(int value, int element)
     {
@@ -82,12 +83,17 @@ public class BaseCardClass : MonoBehaviour
     private void OnMouseUp()
     {
         _dragging = false;
-        transform.position = _snapBackTransform;
+        if (!_overplayer)
+        {
+            transform.position = _snapBackTransform;
+        }
+        else
+        {
+            //get game mangaer
+            _gameManager = FindObjectOfType<GameManager>();
+            //call play card from game manager
+            _gameManager.PlayCard(this);
+        }
     }
-}
-
-public interface DraggableElement
-{ 
-
 }
 
