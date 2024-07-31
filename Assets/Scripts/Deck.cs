@@ -15,12 +15,28 @@ public class Deck : ScriptableObject
         {
             for (int cardValue = 0; cardValue < 10; cardValue++)
             {
-                GameObject tempObject = Instantiate(_gameManager.CardPrefab, _gameManager.DeckLocal.position, Quaternion.identity);
+                GameObject tempObject = Instantiate(_gameManager.CardPrefab, _gameManager.DeckLocal);
                 BaseCardClass tempCard = tempObject.GetComponent<BaseCardClass>();
                 tempObject.SetActive(false);
                 tempCard.Value = cardValue;
                 tempCard.Type = (Element)cardElements;
                 _deck.Add(tempCard);
+                SpriteRenderer spriteRender = tempObject.GetComponent<SpriteRenderer>();
+                switch (cardElements)
+                {
+                    case 0:
+                        spriteRender.sprite = gameManager.FireSprites[cardValue];
+                        break;
+                    case 1:
+                        spriteRender.sprite = gameManager.WaterSprites[cardValue];
+                        break;
+                    case 2:
+                        spriteRender.sprite = gameManager.AirSprites[cardValue];
+                        break;
+                    case 3:
+                        spriteRender.sprite = gameManager.EarthSprites[cardValue];
+                        break;
+                }
             }
         }
         Shuffle();
@@ -48,7 +64,6 @@ public class Deck : ScriptableObject
     public BaseCardClass DrawACard()
     {
         BaseCardClass temp = _deck[0];
-        //if _deck.count() == 0 reshuffle discard
         _outOfDeck.Add(temp);
         _deck.RemoveAt(0);
         return temp;

@@ -4,16 +4,38 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private int _health = 20;
-    public int Helath { get { return _health; } set { _health = value; } }
+    private int _health = 200;
 
-    private void OnCollisionEnter(Collider2D other)
+    private Element _resistance;
+
+    public HealthBar _healthBar;
+
+    public void Start()
     {
-        Debug.Log(gameObject.name + " started overlapping with " + other.gameObject.name);
+        _health = 200;
+        _healthBar.SetMaxHealth(_health);
     }
 
-    private void OnCollisionExit(Collider2D other)
+    public void DealtDamage(Element element, int damage)
     {
-        Debug.Log(gameObject.name + " stopped overlapping with " + other.gameObject.name);
+        if (_resistance == element)
+        {
+            _health -= (damage / 2);
+        }
+        else
+        {
+            _health -= damage;
+        }
+        if (_health < 0)
+        {
+            _health = 0;
+        }
+        _healthBar.SetHealth(_health);
+    }
+
+    public void Heal()
+    {
+        _health += 5;
+        _healthBar.SetHealth(_health);
     }
 }

@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: fad33010edccf4b479e69853c4fa992c
+labels:
+- Rendering
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: enemysprites
+  assetBundleVariant: sprites
+  script: {fileID: 13981, guid: 0000000000000000e000000000000000, type: 0}
