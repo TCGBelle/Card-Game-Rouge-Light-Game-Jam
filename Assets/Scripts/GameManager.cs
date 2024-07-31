@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -40,7 +41,7 @@ public class GameManager : MonoBehaviour
         _enemyScaling = 0;
     }
 
-    private void DrawCard()
+    private void DrawCard()//function not currently refrenced but useful if we want to add other mechanics later so leaving in.
     {
         for (int i = 0; i < _avaliableHandSlots.Length; i++)
         {
@@ -105,7 +106,7 @@ public class GameManager : MonoBehaviour
         enemySprite.sprite = SlimeSprites[_spriteCycle];
         _currEnemy = _enemyGameObject.GetComponent<Enemy>();
         _currEnemy.Helath = 50+(_enemyScaling*10);
-        _currEnemy.Strength = 5+_enemyScaling;
+        _currEnemy.Strength = 5+(_enemyScaling*5);
         _currEnemy.Resistance = (Element)_spriteCycle; //currently spawns a water enemy
         _currEnemy.SetMaxHealthBar();
         _enemyGameObject.transform.position = _enemySpawnLocal.position;
@@ -117,6 +118,10 @@ public class GameManager : MonoBehaviour
     {
         //play animation
         _player.DealtDamage(_currEnemy.Resistance, _currEnemy.Strength);
+        if (_player.Health == 0)
+        {
+            SceneManager.LoadSceneAsync(0);
+        }
     }
 
     private void ReInitalize()

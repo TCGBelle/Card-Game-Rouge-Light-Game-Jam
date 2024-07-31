@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private int _health = 200;
+    public int Health { get { return _health; } }
 
     private Element _resistance;
 
@@ -18,14 +19,14 @@ public class Player : MonoBehaviour
 
     public void DealtDamage(Element element, int damage)
     {
-        if (_resistance == element)
-        {
-            _health -= (damage / 2);
-        }
-        else
-        {
+        //if (_resistance == element)
+        //{
+            //_health -= (damage / 2);
+        //}
+        //else
+        //{
             _health -= damage;
-        }
+        //}
         if (_health < 0)
         {
             _health = 0;
