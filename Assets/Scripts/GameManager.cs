@@ -194,6 +194,7 @@ public class GameManager : MonoBehaviour
             if (_avaliableHandSlots[j] == true)
             {
                 card.gameObject.transform.position = _handSlots[j].position;
+                card.gameObject.transform.rotation = _handSlots[j].rotation;
                 card.gameObject.transform.position = card.gameObject.transform.position + new Vector3(0, 0, -2);
                 _avaliableHandSlots[j] = false;
                 return;
