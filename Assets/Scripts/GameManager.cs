@@ -4,6 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum Combo
+{
+    //frirecombos
+    Steam,//f+w
+    Heatwave,//f+A
+    Magma,//F+E
+    //water combos
+    Storm,//W+A
+    Quagmire,//E+W
+    //air combos
+    Sandstorm//A+E
+}
+
 public class GameManager : MonoBehaviour
 {
 
@@ -24,6 +37,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool[] _avaliableCardSlots;
     public List<BaseCardClass> PlayedCards = new List<BaseCardClass>();
     private List<BaseCardClass> _handCards = new List<BaseCardClass>();
+    private List<Element> _usedElements = new List<Element>();
+    private Combo _turnsCombo;
     [SerializeField] private Transform _deckLocal;
     public Transform DeckLocal { get { return _deckLocal; } }
 
@@ -153,6 +168,7 @@ public class GameManager : MonoBehaviour
                 _handCards.Add(drawnCard);
                 drawnCard.gameObject.SetActive(true);
                 drawnCard.gameObject.transform.position = _handSlots[i].position;
+                drawnCard.gameObject.transform.rotation = _handSlots[i].rotation;
                 drawnCard.gameObject.transform.position = drawnCard.gameObject.transform.position + new Vector3(0,0,-2);
                 _avaliableHandSlots[i] = false;
             }
@@ -187,8 +203,96 @@ public class GameManager : MonoBehaviour
 
     private void AttackEnemy()
     {
-        //comboing of elements goes here
         foreach(BaseCardClass card in PlayedCards)
+        {
+            if (!_usedElements.Contains(card.Type))
+            {
+                _usedElements.Add(card.Type);
+            }
+        }
+        if(_usedElements.Count == 2)
+        {
+            switch (_usedElements[0])
+            {
+                case Element.Fire:
+                    switch (_usedElements[1])
+                    {
+                        case Element.Water:
+                            _turnsCombo = Combo.Steam;
+                            Debug.Log("Steam");
+                            break;
+                        case Element.Air:
+                            _turnsCombo = Combo.Heatwave;
+                            Debug.Log("Heatwave");
+                            break;
+                        case Element.Earth:
+                            _turnsCombo = Combo.Magma;
+                            Debug.Log("Magma");
+                            break;
+                    }
+                    break;
+                case Element.Water:
+                    switch (_usedElements[1])
+                    {
+                        case Element.Fire:
+                            _turnsCombo = Combo.Steam;
+                            Debug.Log("Steam");
+                            break;
+                        case Element.Air:
+                            _turnsCombo = Combo.Heatwave;
+                            Debug.Log("Storm");
+                            break;
+                        case Element.Earth:
+                            _turnsCombo = Combo.Magma;
+                            Debug.Log("Quagmire");
+                            break;
+                    }
+                    break;
+                case Element.Air:
+                    switch (_usedElements[1])
+                    {
+                        case Element.Water:
+                            _turnsCombo = Combo.Steam;
+                            Debug.Log("Storm");
+                            break;
+                        case Element.Fire:
+                            _turnsCombo = Combo.Heatwave;
+                            Debug.Log("Heatwave");
+                            break;
+                        case Element.Earth:
+                            _turnsCombo = Combo.Magma;
+                            Debug.Log("SandStorm");
+                            break;
+                    }
+                    break;
+                case Element.Earth:
+                    switch (_usedElements[1])
+                    {
+                        case Element.Water:
+                            _turnsCombo = Combo.Steam;
+                            Debug.Log("Quagmire");
+                            break;
+                        case Element.Air:
+                            _turnsCombo = Combo.Heatwave;
+                            Debug.Log("SandStorm");
+                            break;
+                        case Element.Fire:
+                            _turnsCombo = Combo.Magma;
+                            Debug.Log("Magma");
+                            break;
+                    }
+                    break;
+            }
+            _usedElements.Clear();
+
+        }
+        else
+        {
+            _usedElements.Clear();
+        }
+        //SpawnComboHazard();
+        //comboing of elements goes here
+        foreach (BaseCardClass card in PlayedCards)
         {
             //artifacts go here
             _currEnemy.DealtDamage(card.Type, card.Value);
@@ -197,6 +301,10 @@ public class GameManager : MonoBehaviour
         {
             _enemyDefeated = true;
         }
+    }
+
+    private void SpawnComboHazard()
+    {
     }
 
     //needs to be updated to make own custom 2d array or database but time crunch.
